@@ -36,7 +36,7 @@ public class PoobStairsGUI extends JFrame {
     //------------------------------------------------- Elementos -------------------------------------------------//
     private void prepareElements() {
         //-------------------------------------------------//
-        setTitle("Conecta4");
+        setTitle("PoobStairs");
         Dimension Screen = Toolkit.getDefaultToolkit().getScreenSize();
         setBounds(0,0,Screen.width/2,Screen.height/2);
         setLocationRelativeTo(null);
