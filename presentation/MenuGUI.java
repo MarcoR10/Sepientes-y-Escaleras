@@ -8,8 +8,8 @@ import java.awt.*;
 
 
 public class MenuGUI extends JFrame {
-    private JPanel Inicio,Extra;
-    private JLabel Front,Back,text1,text2,text3,text4,text5;
+    private JPanel Inicio,Extra,Jugadores;
+    private JLabel Front,Back,Front2,text1,text2,text3,text4,text5;
     private JButton BJugar,BOpciones,BRegresar;
     private Dimension pantalla;
     private JComboBox Modo,Maquina,Casillas,StairSnake,Modificadores;
@@ -26,11 +26,11 @@ public class MenuGUI extends JFrame {
         pantalla = Toolkit.getDefaultToolkit().getScreenSize();
         setSize(pantalla.width / 2, pantalla.height / 2);
         setLocationRelativeTo(null);
+        panelJugadores();
         panelConfiguracion();
         panelInicial();
     }
-
-//-------------------------------------------------------------------------//
+    //-------------------------------------------------------------------------//
     private void panelInicial() {
         //--------------------------------------------//
         Inicio = new JPanel();
@@ -128,6 +128,17 @@ public class MenuGUI extends JFrame {
         Extra.add(Back);
         add(Extra);
     }
+    private void panelJugadores() {
+        Jugadores = new JPanel();
+        Jugadores.setLayout(null);
+        Fondo = new ImageIcon(getClass().getResource("/Imagenes/Fondo.png"));
+        Image Fon = Fondo.getImage().getScaledInstance(pantalla.width / 2,pantalla.height / 2,Image.SCALE_SMOOTH);
+        ImageIcon Fone = new ImageIcon(Fon);
+        Front2 = new JLabel(Fone);
+        Front2.setBounds(0, 0, Fone.getIconWidth(), Fone.getIconHeight());
+        Jugadores.add(Front2);
+        add(Jugadores);
+    }
     public void paint(Graphics g) {
         ImageIcon imageIcon = new ImageIcon("/Imagenes/Fondo.png");
         Image image = imageIcon.getImage();
@@ -174,16 +185,12 @@ public class MenuGUI extends JFrame {
 
 //-------------------------------------------------------------------------//
 
-
-
 //-------------------------------------------------------------------------//
 
-
-
     private void Jugar() {
-        PoobStairsGUI Juego = new PoobStairsGUI();
-        this.setVisible(false);
-        Juego.setVisible(true);
+        Inicio.setVisible(false);
+        Jugadores.setVisible(true);
+        add(Jugadores);
     }
 
     private void Opciones() {
@@ -197,6 +204,17 @@ public class MenuGUI extends JFrame {
         Inicio.setVisible(true);
         add(Inicio);
     }
+    private void Confirmacion(){
+        PoobStairsGUI Juego = new PoobStairsGUI();
+        this.setVisible(false);
+        Juego.setVisible(true);
+    }
+    private void Desconfirmacion(){
+        Jugadores.setVisible(false);
+        Inicio.setVisible(true);
+        add(Inicio);
+    }
+
 }
 
 

@@ -1,5 +1,6 @@
 package presentation;
 
+import domain.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -21,17 +22,14 @@ public class PoobStairsGUI extends JFrame {
     private JMenuItem New, Open, Saved, Restart,Color, Exit,Tamaño;
     private JFileChooser Seleccion;
     private JLabel jugador1Label, jugador2Label, tiempoLabel;
-    private JPanel infoPanel;
+    private JPanel infoPanel,DicePanel;
     enum Player {PLAYER_1, PLAYER_2}
     private Player currentPlayer = PLAYER_1;
 
 
     //-------------------------------------------------////-------------------------------------------------//
     public PoobStairsGUI(){
-        String input = JOptionPane.showInputDialog(null, "Ingrese el tamaño del tablero:");
-        String[] values = input.split(" ");
-        NUM_ROWS = Integer.parseInt(values[0]);
-        NUM_COLS = Integer.parseInt(values[1]);
+        Tablero();
         prepareElements();
         prepareElementsBoard(NUM_ROWS,NUM_COLS,UIManager.getColor("Button.background"));
         prepareAccions();
@@ -53,7 +51,7 @@ public class PoobStairsGUI extends JFrame {
         infoPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(java.awt.Color.BLACK), new EmptyBorder(10, 100, 10, 10)));
         String jugador1 = JOptionPane.showInputDialog(null, "Nombre del jugador 1:");
         String jugador2 = JOptionPane.showInputDialog(null, "Nombre del jugador 2:");
-
+        //-------------------------------------------------//
         // Mostrar nombres de los jugadores
         jugador1Label = new JLabel("Player 1: " + jugador1, SwingConstants.CENTER);
         jugador1Label.setOpaque(true);
@@ -106,7 +104,7 @@ public class PoobStairsGUI extends JFrame {
         jugador2Panel.add(Box.createVerticalGlue());
         jugador2Label.setOpaque(true);
         jugador2Label.setForeground(java.awt.Color.WHITE);
-
+        //-------------------------------------------------//
         JPanel infoPanel = new JPanel();
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.PAGE_AXIS));
         infoPanel.setPreferredSize(new Dimension(200, 10));
@@ -119,6 +117,10 @@ public class PoobStairsGUI extends JFrame {
         infoPanel.add(Box.createVerticalGlue());
 
         getContentPane().add(infoPanel, BorderLayout.WEST);
+        //-------------------------------------------------//
+        DicePanel = new JPanel();
+        getContentPane().add(DicePanel, BorderLayout.EAST);
+        //-------------------------------------------------//
     }
     private void prepareElementsMenu() {
         barra = new JMenuBar();
@@ -134,9 +136,7 @@ public class PoobStairsGUI extends JFrame {
         Restart = new JMenuItem("Restart");
         Exit = new JMenuItem("Exit");
         Color = new JMenuItem("Color");
-        Tamaño = new JMenuItem("Tamaño");
         //-------------------------------------------------//
-        Configuracion.add(Tamaño);
         Configuracion.addSeparator();
         Configuracion.add(Color);
         //-------------------------------------------------//
@@ -169,10 +169,23 @@ public class PoobStairsGUI extends JFrame {
                 gbc.ipadx = 150 / numCols;
                 gbc.ipady = 350 / numRows;
                 panel.add(buttons[row][col], gbc);
-
             }
         }
-        //panel.setBorder(BorderFactory.createEmptyBorder(100, 100, 100, 100));
+        int cont = 0;
+        for(int row = NUM_ROWS-1;row >= 0;row--){
+            if (row % 2 == 0){
+                for(int col = NUM_COLS-1;col >= 0;col--){
+                    buttons[row][col].setText(String.valueOf(cont));
+                    cont += 1;
+                }
+            }else{
+                for(int col = 0;col < NUM_COLS;col++){
+                    buttons[row][col].setText(String.valueOf(cont));
+                    cont += 1;
+                }
+            }
+
+        }
         getContentPane().add(panel, BorderLayout.CENTER);
     }
     //------------------------------------------------- Acciones -------------------------------------------------//
@@ -226,13 +239,6 @@ public class PoobStairsGUI extends JFrame {
                 Color();
             }
         });
-
-        Tamaño.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                refresh();
-            }
-        });
     }
 
     private void prepareAccionsBoard() {
@@ -258,6 +264,13 @@ public class PoobStairsGUI extends JFrame {
     }
 
     //------------------------------------------------- Funciones -------------------------------------------------//
+
+    private void Tablero(){
+        String input = JOptionPane.showInputDialog(null, "Ingrese el numero de filas del tablero:");
+        NUM_ROWS = Integer.parseInt(input);
+        String input2 = JOptionPane.showInputDialog(null, "Ingrese el numero de Columnas del tablero:");
+        NUM_COLS = Integer.parseInt(input2);
+    }
     private void saved() {
         Seleccion = new JFileChooser();
         Seleccion.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
