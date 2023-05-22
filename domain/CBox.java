@@ -1,39 +1,34 @@
 package domain;
 
 public class CBox {
-    private int Row;
-    private int Col;
-    private Modifiers Modificador;
-    private int value;
+    private int Row,Col,Val;
+    private Token ficha;
 
-    public CBox(int Row, int Col) {
+
+
+    public CBox(int Col, int Row) {
         this.Row = Row;
         this.Col = Col;
-        this.Modificador = null;
-        this.value = 0;
+        this.ficha = null;
+        this.Val = 0;
     }
-    public int getValue() {
-        return value;
+    public Token getToken(){
+        return ficha;
     }
-
-    public void setValue(int value) {
-        this.value = value;
+    public void setFicha(Token ficha) {
+        this.ficha = ficha;
     }
-    
+    public void nullFicha(){
+        ficha =  null;
+    }
     public int getRow() {
         return Row;
     }
-
     public int getCol() {
         return Col;
     }
-
-    public Modifiers getModificador() {
-        return Modificador;
-    }
-
-    public void setModificador(Modifiers Modificador) {
-        this.Modificador = Modificador;
+    public void setVal(int val) {
+        Val = val;
     }
 }
 

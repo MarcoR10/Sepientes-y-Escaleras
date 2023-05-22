@@ -4,15 +4,22 @@ package presentation;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 
 
 public class MenuGUI extends JFrame {
-    private JPanel Inicio,Extra,Jugadores;
-    private JLabel Front,Back,Front2,text1,text2,text3,text4,text5;
-    private JButton BJugar,BOpciones,BRegresar;
+    private JPanel Inicio,Extra,Jugadores,jugador1Panel,jugador2Panel;
+    private JLabel Front,Back,Front2, C1,C2,C3,C4, C5,J1,J1C,J2,J2C,TB;
+    private JButton BJugar,BOpciones,BRegresar,BGame,confirmarButton;
+
+
     private Dimension pantalla;
-    private JComboBox Modo,Maquina,Casillas,StairSnake,Modificadores;
+
+    private JComboBox Modo,Maquina,Casillas,StairSnake,Modificadores,Color1,Color2;
+
+    private JTextField Nombre1,Nombre2;
     private ImageIcon Fondo;
 
 //-------------------------------------------------------------------------//
@@ -70,58 +77,58 @@ public class MenuGUI extends JFrame {
         Modo =new JComboBox<>();
         Modo.addItem("Player vs Player");
         Modo.addItem("Player vs Machine");
-        text1 = new JLabel("Game mode:");
-        text1.setFont(new Font("Harlow Solid Italic", Font.BOLD, 20));
-        text1.setForeground(Color.white);
-        text1.setBounds((pantalla.width / 4)+5,(pantalla.height/4)+25,150,30);
+        C1 = new JLabel("Game mode:");
+        C1.setFont(new Font("Harlow Solid Italic", Font.BOLD, 20));
+        C1.setForeground(Color.white);
+        C1.setBounds((pantalla.width / 4)+5,(pantalla.height/4)+25,150,30);
         Modo.setBounds((pantalla.width / 4)+150,(pantalla.height/4)+25,150,30);
-        Extra.add(text1);
+        Extra.add(C1);
         Extra.add(Modo);
         //--------------------------------------------//
         Maquina =new JComboBox<>();
         Maquina.addItem("Beginner");
         Maquina.addItem("Trainee");
-        text2 = new JLabel("Level Machine:");
-        text2.setFont(new Font("Harlow Solid Italic", Font.BOLD, 20));
-        text2.setForeground(Color.white);
-        text2.setBounds((pantalla.width / 3)-175,(pantalla.height/4)+65,150,30);
+        C2 = new JLabel("Level Machine:");
+        C2.setFont(new Font("Harlow Solid Italic", Font.BOLD, 20));
+        C2.setForeground(Color.white);
+        C2.setBounds((pantalla.width / 3)-175,(pantalla.height/4)+65,150,30);
         Maquina.setBounds((pantalla.width / 3)-20,(pantalla.height/4)+65,150,30);
-        text2.setVisible(false);
+        C2.setVisible(false);
         Maquina.setVisible(false);
-        Extra.add(text2);
+        Extra.add(C2);
         Extra.add(Maquina);
         //--------------------------------------------//
         Casillas =new JComboBox<>();
         Casillas.addItem("Activated");
         Casillas.addItem("Disable");
-        text3 = new JLabel("Special Box:");
-        text3.setFont(new Font("Harlow Solid Italic", Font.BOLD, 20));
-        text3.setForeground(Color.BLACK);
-        text3.setBounds((pantalla.width / 3)-160,pantalla.height/7,150,30);
+        C3 = new JLabel("Special Box:");
+        C3.setFont(new Font("Harlow Solid Italic", Font.BOLD, 20));
+        C3.setForeground(Color.BLACK);
+        C3.setBounds((pantalla.width / 3)-160,pantalla.height/7,150,30);
         Casillas.setBounds(pantalla.width / 3,pantalla.height/7,150,30);
-        Extra.add(text3);
+        Extra.add(C3);
         Extra.add(Casillas);
         //--------------------------------------------//
         StairSnake =new JComboBox<>();
         StairSnake.addItem("Activated");
         StairSnake.addItem("Disable");
-        text4 = new JLabel("Modified Stair:");
-        text4.setFont(new Font("Harlow Solid Italic", Font.BOLD, 20));
-        text4.setForeground(Color.WHITE);
-        text4.setBounds((pantalla.width / 6)-175,pantalla.height/7,150,30);
+        C4 = new JLabel("Modified Stair:");
+        C4.setFont(new Font("Harlow Solid Italic", Font.BOLD, 20));
+        C4.setForeground(Color.WHITE);
+        C4.setBounds((pantalla.width / 6)-175,pantalla.height/7,150,30);
         StairSnake.setBounds(pantalla.width / 6,pantalla.height/7,150,30);
-        Extra.add(text4);
+        Extra.add(C4);
         Extra.add(StairSnake);
         //--------------------------------------------//
         Modificadores =new JComboBox<>();
         Modificadores.addItem("Activated");
         Modificadores.addItem("Disable");
-        text5 = new JLabel("Modifiers:");
-        text5.setFont(new Font("Harlow Solid Italic", Font.BOLD, 20));
-        text5.setForeground(Color.WHITE);
-        text5.setBounds((pantalla.width / 6)-120,(pantalla.height/4)+25,150,30);
+        C5 = new JLabel("Modifiers:");
+        C5.setFont(new Font("Harlow Solid Italic", Font.BOLD, 20));
+        C5.setForeground(Color.WHITE);
+        C5.setBounds((pantalla.width / 6)-120,(pantalla.height/4)+25,150,30);
         Modificadores.setBounds(pantalla.width / 6,(pantalla.height/4)+25,150,30);
-        Extra.add(text5);
+        Extra.add(C5);
         Extra.add(Modificadores);
         //--------------------------------------------//
         Extra.add(BRegresar);
@@ -129,13 +136,66 @@ public class MenuGUI extends JFrame {
         add(Extra);
     }
     private void panelJugadores() {
+
         Jugadores = new JPanel();
         Jugadores.setLayout(null);
         Fondo = new ImageIcon(getClass().getResource("/Imagenes/Fondo.png"));
-        Image Fon = Fondo.getImage().getScaledInstance(pantalla.width / 2,pantalla.height / 2,Image.SCALE_SMOOTH);
+        Image Fon = Fondo.getImage().getScaledInstance(pantalla.width / 2, pantalla.height / 2, Image.SCALE_SMOOTH);
         ImageIcon Fone = new ImageIcon(Fon);
         Front2 = new JLabel(Fone);
         Front2.setBounds(0, 0, Fone.getIconWidth(), Fone.getIconHeight());
+        //--------------------------------------------//
+        J1 = new JLabel("Nombre Jugador 1 : ");
+        J1.setFont(new Font("Harlow Solid Italic", Font.BOLD, 20));
+        J1.setForeground(Color.white);
+        J1.setBounds(pantalla.width / 9,pantalla.height/7,200,30);
+        Nombre1 = new JTextField();
+        Nombre1.setBounds(pantalla.width / 9,pantalla.height/6,200,30);
+        Jugadores.add(Nombre1);
+        Jugadores.add(J1);
+        //--------------------------------------------//
+
+        J2 = new JLabel("Nombre Jugador 2 : ");
+        J2.setFont(new Font("Harlow Solid Italic", Font.BOLD, 20));
+        J2.setForeground(Color.black);
+        J2.setBounds((pantalla.width / 3)-100,pantalla.height/7,200,30);
+        Nombre2 = new JTextField();
+        Nombre2.setBounds((pantalla.width /3)-100,pantalla.height/6,200,30);
+        Jugadores.add(Nombre2);
+        Jugadores.add(J2);
+        //--------------------------------------------//
+        J1C = new JLabel("Color Jugador 1 : ");
+        J1C.setFont(new Font("Harlow Solid Italic", Font.BOLD, 20));
+        J1C.setForeground(Color.white);
+        J1C.setBounds(pantalla.width / 9,pantalla.height/5,200,30);
+        Color1 = new JComboBox<>();
+        Color1.addItem("Rojo");
+        Color1.addItem("Azul");
+        Color1.setBounds(pantalla.width / 9, (pantalla.height/5)+30, 100, 30);
+        Jugadores.add(J1C);
+        Jugadores.add(Color1);
+        //--------------------------------------------//
+        J2C = new JLabel("Color Jugador 2 : ");
+        J2C.setFont(new Font("Harlow Solid Italic", Font.BOLD, 20));
+        J2C.setForeground(Color.white);
+        J2C.setBounds((pantalla.width / 3)-100,pantalla.height/5,200,30);
+        Color2 = new JComboBox<>();
+        Color2.addItem("Verde");
+        Color2.addItem("Amarillo");
+        Color2.setBounds((pantalla.width / 3)-100, (pantalla.height/5)+30, 100, 30);
+        Jugadores.add(J2C);
+        Jugadores.add(Color2);
+        //--------------------------------------------//
+        TB = new JLabel("Tamaño del Tablero : ");
+        TB.setFont(new Font("Harlow Solid Italic", Font.BOLD, 20));
+        TB.setForeground(Color.white);
+        TB.setBounds(pantalla.width /2,pantalla.height/4,200,30);
+        //--------------------------------------------//
+        confirmarButton = new JButton("Confirmar");
+        confirmarButton.setBounds(pantalla.width / 5 , (pantalla.height / 4)+200, 150, 30);
+        Jugadores.add(confirmarButton);
+        confirmarButton.setEnabled(false);
+        //--------------------------------------------//
         Jugadores.add(Front2);
         add(Jugadores);
     }
@@ -168,19 +228,59 @@ public class MenuGUI extends JFrame {
                 Regresar();
             }
         });
+
+        confirmarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Confirmacion();
+            }
+        });
+
         Modo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String opcion = (String) Modo.getSelectedItem();
                 if(opcion == "Player vs Machine"){
-                    text2.setVisible(true);
+                    C2.setVisible(true);
                     Maquina.setVisible(true);
                 }else{
-                    text2.setVisible(false);
+                    C2.setVisible(false);
                     Maquina.setVisible(false);
                 }
             }
         });
+
+        Nombre1.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                verificarCamposLlenos();
+            }
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                verificarCamposLlenos();
+            }
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                verificarCamposLlenos();
+            }
+
+        });
+
+        Nombre2.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                verificarCamposLlenos();
+            }
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                verificarCamposLlenos();
+            }
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                verificarCamposLlenos();
+            }
+        });
+
     }
 
 //-------------------------------------------------------------------------//
@@ -192,7 +292,6 @@ public class MenuGUI extends JFrame {
         Jugadores.setVisible(true);
         add(Jugadores);
     }
-
     private void Opciones() {
         Inicio.setVisible(false);
         Extra.setVisible(true);
@@ -214,7 +313,15 @@ public class MenuGUI extends JFrame {
         Inicio.setVisible(true);
         add(Inicio);
     }
-
+    private void verificarCamposLlenos() {
+        boolean camposLlenos = !Nombre1.getText().isEmpty() && !Nombre2.getText().isEmpty();
+        confirmarButton.setEnabled(camposLlenos);
+    }
+    public static void main(String[] args) {
+        MenuGUI gui = new MenuGUI();
+        gui.setVisible(true);
+    }
 }
+
 
 

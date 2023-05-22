@@ -9,12 +9,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import static presentation.PoobStairsGUI.Player.PLAYER_1;
-import static presentation.PoobStairsGUI.Player.PLAYER_2;
 
 public class PoobStairsGUI extends JFrame {
     //-------------------------------------------------Atributos-------------------------------------------------//
-    private int NUM_ROWS,NUM_COLS;
+    private int NUM_ROWS = 10,NUM_COLS = 10;
     private java.awt.Color color;
     private JButton[][] buttons;
     private JMenuBar barra;
@@ -23,13 +21,14 @@ public class PoobStairsGUI extends JFrame {
     private JFileChooser Seleccion;
     private JLabel jugador1Label, jugador2Label, tiempoLabel;
     private JPanel infoPanel,DicePanel;
-    enum Player {PLAYER_1, PLAYER_2}
-    private Player currentPlayer = PLAYER_1;
 
+    private PoobStairs Game;
+    private Player J1,J2;
 
     //-------------------------------------------------////-------------------------------------------------//
     public PoobStairsGUI(){
-        Tablero();
+        //Tablero();
+        Game = new PoobStairs();
         prepareElements();
         prepareElementsBoard(NUM_ROWS,NUM_COLS,UIManager.getColor("Button.background"));
         prepareAccions();
@@ -49,28 +48,28 @@ public class PoobStairsGUI extends JFrame {
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.PAGE_AXIS));
         infoPanel.setPreferredSize(new Dimension(200, 100));
         infoPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(java.awt.Color.BLACK), new EmptyBorder(10, 100, 10, 10)));
-        String jugador1 = JOptionPane.showInputDialog(null, "Nombre del jugador 1:");
-        String jugador2 = JOptionPane.showInputDialog(null, "Nombre del jugador 2:");
+        //String jugador1 = JOptionPane.showInputDialog(null, "Nombre del jugador 1:");
+        //String jugador2 = JOptionPane.showInputDialog(null, "Nombre del jugador 2:");
         //-------------------------------------------------//
         // Mostrar nombres de los jugadores
-        jugador1Label = new JLabel("Player 1: " + jugador1, SwingConstants.CENTER);
+        jugador1Label = new JLabel("Player 1: " , SwingConstants.CENTER);
         jugador1Label.setOpaque(true);
         jugador1Label.setBackground(java.awt.Color.RED);
         jugador1Label.setForeground(java.awt.Color.WHITE);
-        jugador2Label = new JLabel("Player 2: " + jugador2, SwingConstants.CENTER);
+        jugador2Label = new JLabel("Player 2: " , SwingConstants.CENTER);
         jugador2Label.setOpaque(true);
         jugador2Label.setBackground(java.awt.Color.BLUE);
 
         JPanel jugador1Panel = new JPanel();
         jugador1Panel.setLayout(new BoxLayout(jugador1Panel, BoxLayout.PAGE_AXIS));
         jugador1Panel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(java.awt.Color.BLACK), new EmptyBorder(10, 10, 10, 10)));
-        JLabel jugador1Nombre = new JLabel("Nombre jugador 1:" + jugador1);
-        JLabel jugador1Color = new JLabel("Color: " + Jugador.colorToken);
-        JLabel jugador1Numeroescaleras = new JLabel("Escaleras recorridas: " + Jugador.stairswalked);
-        JLabel jugador1Numeroserpientes = new JLabel("Serpientes Recorridas: " + Jugador.snakesTraveled);
-        JLabel jugador1Casillasespeciales = new JLabel("Casillas especiales: " + Jugador.checkboxesSpecialEnabled);
-        JLabel jugador1Modificadores = new JLabel("Modificadores: " + Jugador.modifiersInValues);
-        JLabel jugador1Casillamax = new JLabel("Maxima casilla: " + Jugador.maximaCasilla);
+        JLabel jugador1Nombre = new JLabel("Nombre jugador 1:");
+        JLabel jugador1Color = new JLabel("Color: ");
+        JLabel jugador1Numeroescaleras = new JLabel("Escaleras recorridas: ");
+        JLabel jugador1Numeroserpientes = new JLabel("Serpientes Recorridas: ");
+        JLabel jugador1Casillasespeciales = new JLabel("Casillas especiales: ");
+        JLabel jugador1Modificadores = new JLabel("Modificadores: ");
+        JLabel jugador1Casillamax = new JLabel("Maxima casilla: ");
         jugador1Panel.add(Box.createVerticalGlue());
         jugador1Panel.add(jugador1Nombre);
         jugador1Panel.add(jugador1Color);
@@ -86,13 +85,13 @@ public class PoobStairsGUI extends JFrame {
         JPanel jugador2Panel = new JPanel();
         jugador2Panel.setLayout(new BoxLayout(jugador2Panel, BoxLayout.PAGE_AXIS));
         jugador2Panel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(java.awt.Color.BLACK), new EmptyBorder(10, 10, 10, 10)));
-        JLabel jugador2Nombre = new JLabel("Nombre jugador 2: " + jugador2 );
-        JLabel jugador2Color = new JLabel("Color: " + Jugador.colorToken);
-        JLabel jugador2Numeroescaleras = new JLabel("Escaleras recorridas: " + Jugador.stairswalked);
-        JLabel jugador2Numeroserpientes = new JLabel("Serpientes Recorridas: " + Jugador.snakesTraveled);
-        JLabel jugador2Casillasespeciales = new JLabel("Casillas especiales: " + Jugador.checkboxesSpecialEnabled);
-        JLabel jugador2Modificadores = new JLabel("Modificadores: " + Jugador.modifiersInValues);
-        JLabel jugador2Casillamax = new JLabel("Maxima casilla: " + Jugador.maximaCasilla);
+        JLabel jugador2Nombre = new JLabel("Nombre jugador 2: ");
+        JLabel jugador2Color = new JLabel("Color: ");
+        JLabel jugador2Numeroescaleras = new JLabel("Escaleras recorridas: ");
+        JLabel jugador2Numeroserpientes = new JLabel("Serpientes Recorridas: ");
+        JLabel jugador2Casillasespeciales = new JLabel("Casillas especiales: ");
+        JLabel jugador2Modificadores = new JLabel("Modificadores: ");
+        JLabel jugador2Casillamax = new JLabel("Maxima casilla: ");
         jugador2Panel.add(Box.createVerticalGlue());
         jugador2Panel.add(jugador2Nombre);
         jugador2Panel.add(jugador2Color);
@@ -242,34 +241,27 @@ public class PoobStairsGUI extends JFrame {
     }
 
     private void prepareAccionsBoard() {
+
         for (int row = 0; row < NUM_ROWS; row++) {
             for (int col = 0; col < NUM_COLS; col++) {
                 buttons[row][col].addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        JButton clickedButton = (JButton) e.getSource();
-                        if (clickedButton.getBackground().equals(UIManager.getColor("Button.background"))) {
-                            if (currentPlayer == PLAYER_1) {
-                                clickedButton.setBackground(java.awt.Color.RED);
-                                currentPlayer = PLAYER_2;
-                            } else {
-                                clickedButton.setBackground(java.awt.Color.BLUE);
-                                currentPlayer = PLAYER_1;
-                            }
-                        }
+
                     }
                 });
             }
         }
+
     }
 
     //------------------------------------------------- Funciones -------------------------------------------------//
 
     private void Tablero(){
-        String input = JOptionPane.showInputDialog(null, "Ingrese el numero de filas del tablero:");
-        NUM_ROWS = Integer.parseInt(input);
-        String input2 = JOptionPane.showInputDialog(null, "Ingrese el numero de Columnas del tablero:");
-        NUM_COLS = Integer.parseInt(input2);
+        //String input = JOptionPane.showInputDialog(null, "Ingrese el numero de filas del tablero:");
+        //NUM_ROWS = Integer.parseInt(input);
+        //String input2 = JOptionPane.showInputDialog(null, "Ingrese el numero de Columnas del tablero:");
+        //NUM_COLS = Integer.parseInt(input2);
     }
     private void saved() {
         Seleccion = new JFileChooser();
@@ -319,7 +311,6 @@ public class PoobStairsGUI extends JFrame {
                 buttons[row][col].setEnabled(true);
             }
         }
-        currentPlayer = PLAYER_1;
         tiempoLabel.setText("Turno: 0");
     }
 }

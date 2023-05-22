@@ -1,35 +1,24 @@
 package domain;
 
-import javax.swing.*;
-
 public class Board {
-    public CBox[][] Casillas;
-    private Token Ficha1, Ficha2;
 
-    public Board(int NumRow, int NumCol) {
+    private CBox[][] Casillas;
+
+    public Board(int NumRow, int NumCol ) {
         Casillas = new CBox[NumRow][NumCol];
-        for (int row = 0; row < NumRow; row++) {
-            for (int col = 0; col < NumCol; col++) {
-                Casillas[row][col] = new CBox(row, col);
+        IniciarT(NumRow,NumCol);
+    }
+
+    public void IniciarT(int NumRow, int NumCol){
+        for(int x = 0;x<NumRow;x++){
+            for(int y = 0;y<NumCol;y++){
+                CBox Casilla =  new CBox(x,y);
+                Casillas[x][y] =  Casilla;
             }
         }
     }
-    public int getNumRows() {
-        return Casillas.length; }
-    }
-
-    public int getNumCols() {
-        if (Casillas.length > 0) {
-            return Casillas[0].length; }
-        }
-        return 0; }
-    }
-    public int getCellValue(int row, int col) {
-        if (row >= 0 && row < getNumRows() && col >= 0 && col < getNumCols()) {
-            return Casillas[row][col].getValue();
-        } else {
-            
-            return -1; 
-        }
+    public CBox getCasillas(int x,int y) {
+        return Casillas[x][y];
     }
 }
+
