@@ -13,18 +13,18 @@ import domain.Dice;
 
 public class PoobStairsGUI extends JFrame {
     //-------------------------------------------------Atributos-------------------------------------------------//
-    private int NUM_ROWS = 10,NUM_COLS = 10;
+    private int NUM_ROWS = 10,NUM_COLS = 10,diceResult;
     private java.awt.Color color;
     private JButton[][] buttons;
     private JMenuBar barra;
     private JMenu menu,Configuracion;
     private JMenuItem New, Open, Saved, Restart,Color, Exit,Tamaño;
     private JFileChooser Seleccion;
-    private JLabel jugador1Label, jugador2Label, tiempoLabel;
+    private JLabel jugador1Label, jugador2Label, tiempoLabel,diceResultLabel;
     private JPanel infoPanel,DicePanel;
-
     private PoobStairs Game;
-    private Player J1,J2;
+    private JButton rollButton;
+    private Dice dado = new Dice(6);
 
     //-------------------------------------------------////-------------------------------------------------//
     public PoobStairsGUI(){
@@ -49,8 +49,7 @@ public class PoobStairsGUI extends JFrame {
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.PAGE_AXIS));
         infoPanel.setPreferredSize(new Dimension(200, 100));
         infoPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(java.awt.Color.BLACK), new EmptyBorder(10, 100, 10, 10)));
-        //String jugador1 = JOptionPane.showInputDialog(null, "Nombre del jugador 1:");
-        //String jugador2 = JOptionPane.showInputDialog(null, "Nombre del jugador 2:");
+
         //-------------------------------------------------//
         // Mostrar nombres de los jugadores
         jugador1Label = new JLabel("Player 1: " , SwingConstants.CENTER);
@@ -60,7 +59,7 @@ public class PoobStairsGUI extends JFrame {
         jugador2Label = new JLabel("Player 2: " , SwingConstants.CENTER);
         jugador2Label.setOpaque(true);
         jugador2Label.setBackground(java.awt.Color.BLUE);
-
+        //-------------------------------------------------//
         JPanel jugador1Panel = new JPanel();
         jugador1Panel.setLayout(new BoxLayout(jugador1Panel, BoxLayout.PAGE_AXIS));
         jugador1Panel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(java.awt.Color.BLACK), new EmptyBorder(10, 10, 10, 10)));
@@ -82,7 +81,7 @@ public class PoobStairsGUI extends JFrame {
         jugador1Panel.add(Box.createVerticalGlue());
         jugador1Label.setOpaque(true);
         jugador1Label.setForeground(java.awt.Color.WHITE);
-
+        //-------------------------------------------------//
         JPanel jugador2Panel = new JPanel();
         jugador2Panel.setLayout(new BoxLayout(jugador2Panel, BoxLayout.PAGE_AXIS));
         jugador2Panel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(java.awt.Color.BLACK), new EmptyBorder(10, 10, 10, 10)));
@@ -115,31 +114,24 @@ public class PoobStairsGUI extends JFrame {
         infoPanel.add(jugador2Panel);
         infoPanel.add(Box.createRigidArea(new Dimension(0, 20)));
         infoPanel.add(Box.createVerticalGlue());
-
         getContentPane().add(infoPanel, BorderLayout.WEST);
         //-------------------------------------------------//
         DicePanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-
                 int diceSize = Math.min(getWidth(), getHeight()) - 20;
                 int diceX = (getWidth() - diceSize) / 4;
                 int diceY = (getHeight() - diceSize) / 4;
-
                 g.setColor(java.awt.Color.WHITE);
                 g.fillRect(diceX, diceY, diceSize, diceSize);
                 g.setColor(java.awt.Color.BLACK);
                 g.drawRect(diceX, diceY, diceSize, diceSize);
-
                 int dotSize = diceSize / 7;
                 int dotX = diceX + (diceSize - dotSize) / 4;
                 int dotY = diceY + (diceSize - dotSize) / 4;
-
-                int number = Dice.cara;
-
                 g.setColor(java.awt.Color.BLACK);
-                switch (number) {
+                switch (diceResult) {
                     case 1:
                         g.fillOval(dotX + diceSize / 4, dotY + diceSize / 4, dotSize, dotSize);
                         break;
@@ -176,21 +168,10 @@ public class PoobStairsGUI extends JFrame {
                 }
             }
         };
-
-        Dice dice = new Dice(6);
-
-        JLabel diceResultLabel = new JLabel("Resultado: ");
-
-        JButton rollButton = new JButton("Tirar Dado");
-        rollButton.addActionListener(e -> {
-            int diceResult = dice.Roll();
-            diceResultLabel.setText("Resultado: " + diceResult);
-            DicePanel.repaint();
-        });
-
+        diceResultLabel = new JLabel("Resultado: ");
+        rollButton = new JButton("Tirar Dado");
         DicePanel.add(diceResultLabel);
         DicePanel.add(rollButton);
-
         getContentPane().add(DicePanel, BorderLayout.EAST);
         //-------------------------------------------------//
     }
@@ -274,7 +255,6 @@ public class PoobStairsGUI extends JFrame {
     }
 
     private void prepareAccionsMenu() {
-
         New.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -311,10 +291,18 @@ public class PoobStairsGUI extends JFrame {
                 Color();
             }
         });
+
+        rollButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                diceResult = dado.Roll();
+                diceResultLabel.setText("Resultado: " + diceResult);
+                DicePanel.repaint();
+            }
+        });
     }
 
     private void prepareAccionsBoard() {
-
         for (int row = 0; row < NUM_ROWS; row++) {
             for (int col = 0; col < NUM_COLS; col++) {
                 buttons[row][col].addActionListener(new ActionListener() {
