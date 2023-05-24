@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import domain.Dice;
 
 public class PoobStairsGUI extends JFrame {
     //-------------------------------------------------Atributos-------------------------------------------------//
@@ -117,7 +118,79 @@ public class PoobStairsGUI extends JFrame {
 
         getContentPane().add(infoPanel, BorderLayout.WEST);
         //-------------------------------------------------//
-        DicePanel = new JPanel();
+        DicePanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+
+                int diceSize = Math.min(getWidth(), getHeight()) - 20;
+                int diceX = (getWidth() - diceSize) / 4;
+                int diceY = (getHeight() - diceSize) / 4;
+
+                g.setColor(java.awt.Color.WHITE);
+                g.fillRect(diceX, diceY, diceSize, diceSize);
+                g.setColor(java.awt.Color.BLACK);
+                g.drawRect(diceX, diceY, diceSize, diceSize);
+
+                int dotSize = diceSize / 7;
+                int dotX = diceX + (diceSize - dotSize) / 4;
+                int dotY = diceY + (diceSize - dotSize) / 4;
+
+                int number = Dice.cara;
+
+                g.setColor(java.awt.Color.BLACK);
+                switch (number) {
+                    case 1:
+                        g.fillOval(dotX + diceSize / 4, dotY + diceSize / 4, dotSize, dotSize);
+                        break;
+                    case 2:
+                        g.fillOval(dotX, dotY, dotSize, dotSize);
+                        g.fillOval(dotX + diceSize / 2, dotY + diceSize / 2, dotSize, dotSize);
+                        break;
+                    case 3:
+                        g.fillOval(dotX, dotY, dotSize, dotSize);
+                        g.fillOval(dotX + diceSize / 2, dotY + diceSize / 2, dotSize, dotSize);
+                        g.fillOval(dotX + diceSize / 4, dotY + diceSize / 4, dotSize, dotSize);
+                        break;
+                    case 4:
+                        g.fillOval(dotX, dotY, dotSize, dotSize);
+                        g.fillOval(dotX + diceSize / 2, dotY, dotSize, dotSize);
+                        g.fillOval(dotX, dotY + diceSize / 2, dotSize, dotSize);
+                        g.fillOval(dotX + diceSize / 2, dotY + diceSize / 2, dotSize, dotSize);
+                        break;
+                    case 5:
+                        g.fillOval(dotX, dotY, dotSize, dotSize);
+                        g.fillOval(dotX + diceSize / 2, dotY, dotSize, dotSize);
+                        g.fillOval(dotX, dotY + diceSize / 2, dotSize, dotSize);
+                        g.fillOval(dotX + diceSize / 2, dotY + diceSize / 2, dotSize, dotSize);
+                        g.fillOval(dotX + diceSize / 4, dotY + diceSize / 4, dotSize, dotSize);
+                        break;
+                    case 6:
+                        g.fillOval(dotX, dotY, dotSize, dotSize);
+                        g.fillOval(dotX + diceSize / 2, dotY, dotSize, dotSize);
+                        g.fillOval(dotX, dotY + diceSize / 2, dotSize, dotSize);
+                        g.fillOval(dotX + diceSize / 2, dotY + diceSize / 2, dotSize, dotSize);
+                        g.fillOval(dotX, dotY + diceSize / 4, dotSize, dotSize);
+                        g.fillOval(dotX + diceSize / 2, dotY + diceSize / 4, dotSize, dotSize);
+                        break;
+                }
+            }
+        };
+
+        Dice dice = new Dice(6);
+
+        JLabel diceResultLabel = new JLabel("Resultado: ");
+
+        JButton rollButton = new JButton("Tirar Dado");
+        rollButton.addActionListener(e -> {
+            int diceResult = dice.Roll();
+            diceResultLabel.setText("Resultado: " + diceResult);
+            DicePanel.repaint();
+        });
+
+        DicePanel.add(diceResultLabel);
+        DicePanel.add(rollButton);
+
         getContentPane().add(DicePanel, BorderLayout.EAST);
         //-------------------------------------------------//
     }
