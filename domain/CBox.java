@@ -1,16 +1,12 @@
 package domain;
 
 public class CBox {
-    private int Row,Col,Val;
+    private int col,row,Val;
     private Token ficha;
-
-
-
-    public CBox(int Col, int Row) {
-        this.Row = Row;
-        this.Col = Col;
+    public CBox(int row,int col ) {
+        this.row = row;
+        this.col = col;
         this.ficha = null;
-        this.Val = 0;
     }
     public Token getToken(){
         return ficha;
@@ -21,14 +17,8 @@ public class CBox {
     public void nullFicha(){
         ficha =  null;
     }
-    public int getRow() {
-        return Row;
-    }
-    public int getCol() {
-        return Col;
-    }
-    public void setVal(int val) {
-        Val = val;
+    public int getVal() {
+        return Val;
     }
 }
 

@@ -2,6 +2,7 @@ package presentation;
 
 import domain.*;
 import javax.swing.*;
+import static java.awt.Color.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -9,6 +10,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+
 import domain.Dice;
 
 public class PoobStairsGUI extends JFrame {
@@ -25,10 +29,11 @@ public class PoobStairsGUI extends JFrame {
     private PoobStairs Game;
     private JButton rollButton;
     private Dice dado = new Dice(6);
+    private Map<Integer, Token> tokenMap = new HashMap<>();
+    private Token J1,J2;
 
     //-------------------------------------------------////-------------------------------------------------//
     public PoobStairsGUI(){
-        //Tablero();
         Game = new PoobStairs();
         prepareElements();
         prepareElementsBoard(NUM_ROWS,NUM_COLS,UIManager.getColor("Button.background"));
@@ -63,7 +68,7 @@ public class PoobStairsGUI extends JFrame {
         JPanel jugador1Panel = new JPanel();
         jugador1Panel.setLayout(new BoxLayout(jugador1Panel, BoxLayout.PAGE_AXIS));
         jugador1Panel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(java.awt.Color.BLACK), new EmptyBorder(10, 10, 10, 10)));
-        JLabel jugador1Nombre = new JLabel("Nombre jugador 1:");
+        JLabel jugador1Nombre = new JLabel("Nombre jugador 1:"+ MenuGUI.getNombre1());
         JLabel jugador1Color = new JLabel("Color: ");
         JLabel jugador1Numeroescaleras = new JLabel("Escaleras recorridas: ");
         JLabel jugador1Numeroserpientes = new JLabel("Serpientes Recorridas: ");
@@ -85,7 +90,7 @@ public class PoobStairsGUI extends JFrame {
         JPanel jugador2Panel = new JPanel();
         jugador2Panel.setLayout(new BoxLayout(jugador2Panel, BoxLayout.PAGE_AXIS));
         jugador2Panel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(java.awt.Color.BLACK), new EmptyBorder(10, 10, 10, 10)));
-        JLabel jugador2Nombre = new JLabel("Nombre jugador 2: ");
+        JLabel jugador2Nombre = new JLabel("Nombre jugador 2: "+ MenuGUI.getNombre2());
         JLabel jugador2Color = new JLabel("Color: ");
         JLabel jugador2Numeroescaleras = new JLabel("Escaleras recorridas: ");
         JLabel jugador2Numeroserpientes = new JLabel("Serpientes Recorridas: ");
@@ -206,11 +211,12 @@ public class PoobStairsGUI extends JFrame {
         setJMenuBar(barra);
     }
 
-    private void prepareElementsBoard(int numRows, int numCols,Color color) {
+    private void prepareElementsBoard(int numRows, int numCols, Color color) {
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.BOTH;
-        buttons = new JButton[NUM_ROWS][NUM_COLS];
+        buttons = new JButton[numRows][numCols];
+
         for (int row = 0; row < numRows; row++) {
             for (int col = 0; col < numCols; col++) {
                 buttons[row][col] = new JButton();
@@ -224,21 +230,32 @@ public class PoobStairsGUI extends JFrame {
                 panel.add(buttons[row][col], gbc);
             }
         }
+
         int cont = 0;
-        for(int row = NUM_ROWS-1;row >= 0;row--){
-            if (row % 2 == 0){
-                for(int col = NUM_COLS-1;col >= 0;col--){
+        for (int row = numRows - 1; row >= 0; row--) {
+            if (row % 2 == 0) {
+                for (int col = numCols - 1; col >= 0; col--) {
                     buttons[row][col].setText(String.valueOf(cont));
                     cont += 1;
+                    CBox casilla = new CBox(row, col);
+                    J1 = new Token(casilla, color);
+                    tokenMap.put(cont, J1);
+                    J2 = new Token(casilla, color);
+                    tokenMap.put(cont, J2);
                 }
-            }else{
-                for(int col = 0;col < NUM_COLS;col++){
+            } else {
+                for (int col = 0; col < numCols; col++) {
                     buttons[row][col].setText(String.valueOf(cont));
                     cont += 1;
+                    CBox casilla = new CBox(row, col);
+                    J1 = new Token(casilla, color);
+                    tokenMap.put(cont, J1);
+                    J2 = new Token(casilla, color);
+                    tokenMap.put(cont, J2);
                 }
             }
-
         }
+
         getContentPane().add(panel, BorderLayout.CENTER);
     }
     //------------------------------------------------- Acciones -------------------------------------------------//
@@ -292,6 +309,9 @@ public class PoobStairsGUI extends JFrame {
             }
         });
 
+    }
+
+    private void prepareAccionsBoard() {
         rollButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -300,30 +320,28 @@ public class PoobStairsGUI extends JFrame {
                 DicePanel.repaint();
             }
         });
-    }
 
-    private void prepareAccionsBoard() {
         for (int row = 0; row < NUM_ROWS; row++) {
             for (int col = 0; col < NUM_COLS; col++) {
-                buttons[row][col].addActionListener(new ActionListener() {
+                JButton button = buttons[row][col];
+                button.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-
+                        String buttonText = button.getText();
+                        int fichaIndex = Integer.parseInt(buttonText);
+                        J1 = tokenMap.get(fichaIndex);
+                        button.setIcon(new FichaIcon(RED, 20, 20));
+                        J2 = tokenMap.get(fichaIndex);
+                        button.setIcon(new FichaIcon(BLUE, 20, 20));
                     }
                 });
             }
         }
 
+
     }
 
     //------------------------------------------------- Funciones -------------------------------------------------//
-
-    private void Tablero(){
-        //String input = JOptionPane.showInputDialog(null, "Ingrese el numero de filas del tablero:");
-        //NUM_ROWS = Integer.parseInt(input);
-        //String input2 = JOptionPane.showInputDialog(null, "Ingrese el numero de Columnas del tablero:");
-        //NUM_COLS = Integer.parseInt(input2);
-    }
     private void saved() {
         Seleccion = new JFileChooser();
         Seleccion.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);

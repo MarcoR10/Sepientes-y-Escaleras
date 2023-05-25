@@ -13,13 +13,9 @@ public class MenuGUI extends JFrame {
     private JPanel Inicio,Extra,Jugadores,jugador1Panel,jugador2Panel;
     private JLabel Front,Back,Front2, C1,C2,C3,C4, C5,J1,J1C,J2,J2C,TB;
     private JButton BJugar,BOpciones,BRegresar,BGame,confirmarButton;
-
-
     private Dimension pantalla;
-
     private JComboBox Modo,Maquina,Casillas,StairSnake,Modificadores,Color1,Color2;
-
-    private JTextField Nombre1,Nombre2;
+    private static JTextField Nombre1,Nombre2;
     private ImageIcon Fondo;
 
 //-------------------------------------------------------------------------//
@@ -316,6 +312,12 @@ public class MenuGUI extends JFrame {
     private void verificarCamposLlenos() {
         boolean camposLlenos = !Nombre1.getText().isEmpty() && !Nombre2.getText().isEmpty();
         confirmarButton.setEnabled(camposLlenos);
+    }
+    public static String getNombre1() {
+        return Nombre1.getText();
+    }
+    public static String getNombre2() {
+        return Nombre2.getText();
     }
     public static void main(String[] args) {
         MenuGUI gui = new MenuGUI();
