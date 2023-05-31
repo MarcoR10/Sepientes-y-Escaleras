@@ -1,42 +1,42 @@
-package domain;
+package Domain;
 
-import java.awt.*;
 
-public class Player {
-    private String Name;
-    private Color color;
-    private int Stairs,Snakes,Special_Box,Modifierds,maxBox;
-    private Token Ficha;
+import java.awt.Color;
 
-    public Player(String Name, Color color){
-        this.Name = Name;
-        this.color = color;
-        Stairs = 0;
-        Snakes = 0;
-        Special_Box = 0;
-        Modifierds = 0;
-        maxBox = 0;
+public abstract class Player {
+    private String nombre;
+    private Color colorficha;
+    private Token tokenJug;
+    private boolean isWinner;
+    private int turno;
+
+    public Player(String name, Color color){
+        this.nombre = name;
+        this.colorficha = color;
+        tokenJug = new Token(colorficha);
     }
 
-    public String getName() {
-        return Name;
+    public Color getColorficha() {
+        return colorficha;
     }
-    public Color getColor() {
-        return color;
+
+    public Token getFichaJug() {
+        return tokenJug;
     }
-    public int getStairs() {
-        return Stairs;
+
+    public int getTurno() {
+        return turno;
     }
-    public int getSnakes() {
-        return Snakes;
+
+    public void hasWon(){
+        isWinner = true;
     }
-    public int getSpecial_Box() {
-        return Special_Box;
+
+    public String getNombre() {
+        return nombre;
     }
-    public int getModifierds() {
-        return Modifierds;
-    }
-    public int getMaxBox() {
-        return maxBox;
+
+    public void setTurno(int turno) {
+        this.turno = turno;
     }
 }
