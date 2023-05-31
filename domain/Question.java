@@ -10,36 +10,26 @@ public class Question extends CBox {
         super(n);
         preguntas = new ArrayList<>();
         respuestas = new ArrayList<>();
-        preguntas.add("Francia es el segundo país más grande de Europa");
+        preguntas.add("El Monte Everest es la montaña más alta del mundo");
         respuestas.add(true);
-        preguntas.add("Los delfines son mamíferos.");
+        preguntas.add("La Mona Lisa fue pintada por el artista renacentista Leonardo da Vinci.");
         respuestas.add(true);
-        preguntas.add("China es el país más grande del mundo.");
+        preguntas.add("Los pingüinos pueden volar.");
         respuestas.add(false);
-        preguntas.add("Machu Picchu está en Perú.");
+        preguntas.add("El río Amazonas es el río más largo del mundo.");
         respuestas.add(true);
-        preguntas.add("Melbourne es la capital de Australia.");
-        respuestas.add(false);
-        preguntas.add("En 'Buscando a Nemo' el protagonista es un pez globo.");
-        respuestas.add(false);
-        preguntas.add("Thomas Edison descubrió la gravedad.");
-        respuestas.add(false);
-        preguntas.add("Alexander Fleming descubrió la penicilina.");
+        preguntas.add("La estatua de la Libertad fue un regalo de Francia a los Estados Unidos.");
         respuestas.add(true);
-        preguntas.add("Hay cinco grupos sanguíneos diferentes.");
+        preguntas.add("La estatua de la Libertad fue un regalo de Francia a los Estados Unidos.");
         respuestas.add(false);
-        preguntas.add("Marrakech es la capital de Marruecos.");
+        preguntas.add("El ajedrez es un deporte olímpico reconocido.");
         respuestas.add(false);
-        preguntas.add("Colombia tiene 32 departamentos");
+        preguntas.add("La Mona Lisa se exhibe en el Museo del Louvre en París.");
         respuestas.add(true);
-        preguntas.add("La segunda Guerra Mundial terminó en 1945");
-        respuestas.add(true);
-        preguntas.add("El cine también es conocido como Noveno arte");
+        preguntas.add("El idioma más hablado en el mundo es el inglés. ");
         respuestas.add(false);
-        preguntas.add("Hay más telefonos y dispositivos en el mundo que personas");
-        respuestas.add(true);
-        preguntas.add("El gentilicio de alguien de Bucaramanga es bumangués");
-        respuestas.add(true);
+        preguntas.add("El Polo Norte es un continente.");
+        respuestas.add(false);
     }
 
     public boolean ask(){

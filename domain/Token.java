@@ -48,14 +48,6 @@ public class Token {
     public void wentThroughLadder(boolean value){
         this.throughLadder = value;
     }
-
-    public boolean isThroughSnake() {
-        return throughSnake;
-    }
-
-    public boolean isThroughLadder() {
-        return throughLadder;
-    }
     public void wentThroughSpecial(String type){
         this.typeSpecial = type;
         if(type == null){
@@ -66,11 +58,4 @@ public class Token {
         }
     }
 
-    public String getTypeSpecial() {
-        return typeSpecial;
-    }
-
-    public boolean isThroughSpecial() {
-        return throughSpecial;
-    }
 }

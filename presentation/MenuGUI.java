@@ -43,11 +43,7 @@ public class MenuGUI extends JFrame {
         setSize(Pantalla.width/2, Pantalla.height/2);
         setLocationRelativeTo(null);
         PanelInicial();
-        //prepareElementsMenu();
     }
-
-
-
     //-------------------------------------------------------------------------//
     private void PanelInicial() {
         //--------------------------------------------//
@@ -131,13 +127,8 @@ public class MenuGUI extends JFrame {
         validate();
         repaint();
     }
-
     public void finishGame() {
         System.exit(0);
-    }
-
-    public void returnToMenu(){
-        removeAll();
     }
     private void salida() {
         if (JOptionPane.showConfirmDialog(rootPane, "Seguro que quiere salir", "Salir del sistema", JOptionPane.YES_NO_OPTION
